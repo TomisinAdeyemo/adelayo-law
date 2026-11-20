@@ -71,6 +71,21 @@
   openButton.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
   closeButton.addEventListener('click', () => setMenu(false));
   menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
+  // Footer logo: swap between three pre-rendered SVGs so only the exact brand colours appear.
+  const footerMark = document.querySelector('.footer-logo-mark');
+  const footerMarkColors = [
+    'assets/adelayo-mark-green.svg',
+    'assets/adelayo-mark-red.svg',
+    'assets/adelayo-mark-gold.svg'
+  ];
+  if (footerMark && !reducedMotion) {
+    let footerMarkIndex = 0;
+    window.setInterval(() => {
+      footerMarkIndex = (footerMarkIndex + 1) % footerMarkColors.length;
+      footerMark.src = footerMarkColors[footerMarkIndex];
+    }, 3000);
+  }
+
   const year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
