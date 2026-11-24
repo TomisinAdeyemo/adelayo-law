@@ -1,3 +1,5 @@
+// Custom language preference control. No third-party translation toolbar is loaded.
+// Localized page content should be published as reviewed language-specific pages.
 (() => {
   const section = document.querySelector('.stripe-reveal');
   const curtain = document.querySelector('.stripe-curtain');
