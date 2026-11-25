@@ -104,6 +104,39 @@
   openButton.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
   closeButton.addEventListener('click', () => setMenu(false));
   menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
+  // Navbar logo: cycle through the three exact brand colours while hovered or keyboard-focused.
+  const navMark = document.querySelector('.site-header .brand-logo');
+  const navMarkColors = [
+    'assets/adelayo-mark-green.svg',
+    'assets/adelayo-mark-red.svg',
+    'assets/adelayo-mark-gold.svg'
+  ];
+  if (navMark) {
+    let navMarkIndex = 0;
+    let navMarkTimer = null;
+    const startNavMarkCycle = () => {
+      if (navMarkTimer || reducedMotion) return;
+      navMarkIndex = 0;
+      navMark.src = navMarkColors[navMarkIndex];
+      navMarkTimer = window.setInterval(() => {
+        navMarkIndex = (navMarkIndex + 1) % navMarkColors.length;
+        navMark.src = navMarkColors[navMarkIndex];
+      }, 700);
+    };
+    const stopNavMarkCycle = () => {
+      if (navMarkTimer) window.clearInterval(navMarkTimer);
+      navMarkTimer = null;
+      navMark.src = 'assets/adelayo-mark.svg';
+    };
+    const navLogoLink = navMark.closest('.wordmark');
+    if (navLogoLink) {
+      navLogoLink.addEventListener('pointerenter', startNavMarkCycle);
+      navLogoLink.addEventListener('pointerleave', stopNavMarkCycle);
+      navLogoLink.addEventListener('focus', startNavMarkCycle);
+      navLogoLink.addEventListener('blur', stopNavMarkCycle);
+    }
+  }
+
   // Footer logo: swap between three pre-rendered SVGs so only the exact brand colours appear.
   const footerMark = document.querySelector('.footer-logo-mark');
   const footerMarkColors = [
