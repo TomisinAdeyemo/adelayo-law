@@ -1728,3 +1728,50 @@ body { top: 0 !important; }
   text-align: center;
 }
 .language-coverage-note[hidden] { display: none; }
+
+/* Bamidele Adelayo — expanded editorial profile */
+.bami-profile { background: var(--paper); color: var(--ink); }
+.bami-hero { min-height: min(860px, 100svh); }
+.bami-languages { margin: -12px 0 24px; color: #66665e; font-size: 14px; letter-spacing: .01em; }
+.bami-intro { max-width: 500px; color: #55564f; font-size: clamp(18px, 2vw, 23px); line-height: 1.5; }
+.bami-content { padding: 40px 8vw 110px; }
+.bami-section { display: grid; grid-template-columns: minmax(150px, .34fr) minmax(0, 1fr); gap: clamp(35px, 8vw, 125px); padding: 62px 0; border-top: 1px solid #1719142b; }
+.bami-section-label { display: flex; gap: 16px; align-items: baseline; color: #73736a; font-size: 10px; font-weight: 700; letter-spacing: .14em; }
+.bami-section-label span:first-child { color: var(--red); }
+.bami-section-body { max-width: 790px; color: #4f5049; font-size: 16px; line-height: 1.85; }
+.bami-section-body h2, .bami-cta h2 { margin: 0 0 26px; color: var(--ink); font-size: clamp(34px, 4.4vw, 58px); line-height: 1.04; letter-spacing: -2px; font-weight: 500; }
+.bami-section-body p { margin: 0 0 20px; }
+.bami-section-body strong { color: var(--ink); font-weight: 650; }
+.bami-practice { padding: 25px 0 27px; border-top: 1px solid #17191420; }
+.bami-practice h3 { margin: 0 0 12px; color: var(--green); font-size: 23px; letter-spacing: -.6px; }
+.bami-practice p { margin: 0; }
+.bami-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 75px); }
+.bami-section-body ul { margin: 0; padding-left: 20px; }
+.bami-section-body li { margin: 0 0 12px; padding-left: 5px; }
+.bami-admissions { columns: 2; column-gap: 55px; }
+.bami-cta { padding: 85px 8vw 100px; background: var(--green); color: #fff; }
+.bami-cta .profile-kicker { color: #ffffffa8; }
+.bami-cta h2 { max-width: 780px; color: #fff; }
+.bami-cta > p:not(.profile-kicker) { max-width: 650px; color: #ffffffc9; font-size: 18px; line-height: 1.7; }
+.bami-cta > a { display: inline-flex; gap: 22px; align-items: center; margin-top: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--yellow); color: #fff; font-weight: 600; }
+@media (max-width: 760px) {
+  .bami-content { padding: 15px 6vw 70px; }
+  .bami-section { grid-template-columns: 1fr; gap: 20px; padding: 42px 0; }
+  .bami-section-body { font-size: 15px; }
+  .bami-two-col { grid-template-columns: 1fr; gap: 35px; }
+  .bami-admissions { columns: 1; }
+  .bami-cta { padding: 65px 6vw 75px; }
+}
+
+
+/* Lizbeth Meza — expanded team profile */
+.lizbeth-profile .profile-portrait img { object-position: center 24%; }
+.lizbeth-profile .bami-section-body ul { margin: 4px 0 22px; }
+.lizbeth-language-pair { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px !important; }
+.lizbeth-language-pair span { display:inline-flex; align-items:center; padding:10px 15px; border:1px solid #22322155; color:var(--green); font-size:11px; font-weight:700; letter-spacing:.12em; }
+.lizbeth-cta { background:var(--green); }
+@media (max-width:760px) { .lizbeth-language-pair { gap:8px; } }
+
+/* Patricia Perez Tafolla profile refinements */
+.profile-bio .profile-language-note { margin: -10px 0 26px; color: var(--red); font-size: 14px; font-weight: 500; }
+.profile-bio h2 { margin: 0 0 18px; color: var(--ink); font-size: clamp(24px, 2.6vw, 34px); line-height: 1.12; letter-spacing: -1px; font-weight: 600; }
