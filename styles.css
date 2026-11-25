@@ -700,6 +700,20 @@ button, a { touch-action: manipulation; -webkit-tap-highlight-color: rgba(214,17
   font-weight: 700;
   letter-spacing: .16em;
 }
+/* Google rating summary beside the client-experience heading */
+.google-rating {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  margin-bottom: 3px;
+}
+.google-rating-top { display: flex; align-items: center; gap: 12px; }
+.google-rating-score { font-size: 30px; line-height: 1; font-weight: 700; letter-spacing: -.05em; }
+.google-rating-stars { color: #D6B316; font-size: 21px; line-height: 1; letter-spacing: 2px; white-space: nowrap; }
+.google-rating-caption { color: #555; font-size: 10px; line-height: 1.3; font-weight: 700; letter-spacing: .12em; }
+.google-rating .all-reviews-link { margin: 4px 0 0; }
 .all-reviews-link:hover { color: var(--red, #B70D0D); }
 .testimonial-viewport {
   width: 100%;
@@ -782,6 +796,10 @@ button, a { touch-action: manipulation; -webkit-tap-highlight-color: rgba(214,17
 @media (max-width: 600px) {
   .testimonials { padding: 72px 0 64px; }
   .testimonials-head { align-items: flex-start; flex-direction: column; gap: 24px; margin: 0 6vw 32px; }
+  .google-rating { align-items: flex-start; gap: 6px; }
+  .google-rating-top { gap: 10px; }
+  .google-rating-score { font-size: 26px; }
+  .google-rating-stars { font-size: 19px; }
   .testimonials-head h2 { font-size: clamp(43px, 12vw, 64px); }
   .all-reviews-link { margin: 0; }
   .testimonial-group { gap: 18px; padding-right: 18px; }
@@ -1535,21 +1553,13 @@ button, a { touch-action: manipulation; -webkit-tap-highlight-color: rgba(214,17
 }
 
 
-/* Team portraits start monochrome and return to full colour on hover/focus. */
+/* Team cards: portraits remain unchanged on hover; the entire card opens its profile. */
 .team-card { display: block; color: inherit; text-decoration: none; cursor: pointer; }
 .team-card .team-portrait { cursor: pointer; }
 .team-portrait::after, .team-role { display: none !important; }
-.team-portrait > img {
-  transform: none !important;
-  filter: grayscale(100%) !important;
-  transition: filter .4s ease !important;
-}
+.team-portrait > img { transform: none !important; filter: grayscale(100%) !important; transition: none; }
 .team-card:hover .team-portrait > img,
-.team-card:focus-visible .team-portrait > img,
-.team-card:focus-within .team-portrait > img {
-  transform: none !important;
-  filter: grayscale(0%) !important;
-}
+.team-card:focus-visible .team-portrait > img { transform: none !important; filter: grayscale(100%) !important; }
 .team-card:focus-visible { outline: 2px solid var(--yellow); outline-offset: 6px; }
 .team-profile-link { display: inline-flex; gap: 9px; align-items: center; margin-top: 12px; color: var(--red); font-size: 10px; font-weight: 700; letter-spacing: .1em; }
 .team-card:hover .team-profile-link span, .team-card:focus-visible .team-profile-link span { transform: translate(3px,-3px); }
@@ -1581,8 +1591,7 @@ button, a { touch-action: manipulation; -webkit-tap-highlight-color: rgba(214,17
 .profile-bio p { margin: 0 0 17px; }
 .profile-contact { display: inline-flex; gap: 18px; align-items: center; margin-top: 26px; padding-bottom: 10px; border-bottom: 1px solid var(--red); color: var(--red); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
 .profile-portrait { margin: 0; width: 100%; max-width: 540px; justify-self: end; aspect-ratio: 4 / 5; overflow: hidden; background: #d8d7d1; }
-.profile-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; filter: grayscale(100%); transition: filter .4s ease; }
-.profile-portrait:hover img, .profile-portrait:focus-within img { filter: grayscale(0%); }
+.profile-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; filter: grayscale(100%); }
 .profile-footer { padding: 22px 8vw; display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid #11111124; color: #62625b; font-size: 10px; font-weight: 600; letter-spacing: .1em; }
 .profile-footer a { color: var(--red); }
 @media (max-width: 760px) {
@@ -1725,10 +1734,13 @@ body { top: 0 !important; }
   .menu-links { align-items: flex-start; }
 }
 
-/* Manual language coverage notice */
+/* Manual language coverage notice: sits above the navbar on desktop and mobile. */
 .language-coverage-note {
-  position: relative;
-  z-index: 20;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  display: block;
+  width: 100%;
   margin: 0;
   padding: 9px 22px;
   background: #d6b316;
@@ -1737,6 +1749,7 @@ body { top: 0 !important; }
   text-align: center;
 }
 .language-coverage-note[hidden] { display: none; }
+.site-header { top: var(--language-note-height, 0px); }
 
 /* Bamidele Adelayo — expanded editorial profile */
 .bami-profile { background: var(--paper); color: var(--ink); }
@@ -1784,3 +1797,40 @@ body { top: 0 !important; }
 /* Patricia Perez Tafolla profile refinements */
 .profile-bio .profile-language-note { margin: -10px 0 26px; color: var(--red); font-size: 14px; font-weight: 500; }
 .profile-bio h2 { margin: 0 0 18px; color: var(--ink); font-size: clamp(24px, 2.6vw, 34px); line-height: 1.12; letter-spacing: -1px; font-weight: 600; }
+
+@media (max-width: 800px) {
+  .language-coverage-note {
+    padding: 8px 14px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+}
+
+/* Mobile UX: keep the primary navigation available while scrolling. */
+@media (max-width: 800px) {
+  .site-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(8, 10, 8, .94);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, .16);
+    padding-top: env(safe-area-inset-top, 0px);
+    transition: background-color .2s ease, border-color .2s ease;
+  }
+  .about-page .site-header {
+    background: rgba(255, 255, 255, .94);
+    border-bottom-color: rgba(0, 0, 0, .12);
+  }
+  .profile-page .site-header {
+    background: rgba(241, 240, 235, .95);
+    border-bottom-color: rgba(17, 19, 15, .14);
+  }
+  .site-header .wordmark { flex-shrink: 0; }
+  html { scroll-padding-top: calc(86px + env(safe-area-inset-top, 0px)); }
+  #intro, #practice, #about, #team, #locations,
+  .detail-section, .detail-contact { scroll-margin-top: calc(86px + env(safe-area-inset-top, 0px)); }
+}
