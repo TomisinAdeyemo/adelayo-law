@@ -135,6 +135,7 @@
     originalText.forEach((original, node) => { node.nodeValue = original; });
     if (lang === 'en') {
       document.querySelector('.language-coverage-note')?.setAttribute('hidden', '');
+      document.documentElement.style.setProperty('--language-note-height', '0px');
       try { localStorage.setItem(storageKey, 'en'); } catch (_) {}
       document.dispatchEvent(new CustomEvent('adelayo:languagechange', { detail: { language: 'en', languageName: languageNames.en } }));
       return;
@@ -167,12 +168,21 @@
         notice.className = 'language-coverage-note';
         notice.setAttribute('role', 'status');
         const header = document.querySelector('.site-header');
-        if (header) header.insertAdjacentElement('afterend', notice);
+        if (header) header.insertAdjacentElement('beforebegin', notice);
       }
       notice.textContent = noticeText[lang];
       notice.hidden = false;
+      const syncNoticeHeight = () => {
+        document.documentElement.style.setProperty('--language-note-height', `${notice.getBoundingClientRect().height}px`);
+      };
+      syncNoticeHeight();
+      if (!notice._heightObserver && 'ResizeObserver' in window) {
+        notice._heightObserver = new ResizeObserver(syncNoticeHeight);
+        notice._heightObserver.observe(notice);
+      }
     } else if (notice) {
       notice.hidden = true;
+      document.documentElement.style.setProperty('--language-note-height', '0px');
     }
     try { localStorage.setItem(storageKey, lang); } catch (_) {}
     document.dispatchEvent(new CustomEvent('adelayo:languagechange', { detail: { language: lang, languageName: languageNames[lang] } }));
