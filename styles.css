@@ -1834,3 +1834,23 @@ body { top: 0 !important; }
   #intro, #practice, #about, #team, #locations,
   .detail-section, .detail-contact { scroll-margin-top: calc(86px + env(safe-area-inset-top, 0px)); }
 }
+
+
+/* Paired social profile links in the homepage social section */
+.home-socials-follow-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px 28px;
+}
+.home-socials-follow-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+@media (max-width: 700px) {
+  .home-socials-follow-links {
+    justify-content: flex-start;
+    gap: 12px 20px;
+  }
+}
