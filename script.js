@@ -2,47 +2,78 @@
 // Localized page content should be published as reviewed language-specific pages.
 (() => {
   const section = document.querySelector('.stripe-reveal');
+  const sticky = section?.querySelector('.reveal-sticky');
   const curtain = document.querySelector('.stripe-curtain');
   const stripes = [...document.querySelectorAll('.curtain-stripe')];
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let ticking = false;
+  let frame = 0;
+  let targetProgress = 0;
+  let renderedProgress = 0;
+  let sectionStart = 0;
+  let scrollDistance = 1;
 
   function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }
-  function updateReveal() {
+
+  function measureReveal() {
+    if (!section || !sticky) return;
+    sectionStart = section.getBoundingClientRect().top + window.scrollY;
+    // Measure the actual sticky panel rather than the viewport. This avoids
+    // progress jumps when mobile browser chrome changes the visual viewport.
+    scrollDistance = Math.max(1, section.offsetHeight - sticky.offsetHeight);
+    updateTarget();
+  }
+
+  function updateTarget() {
     if (!section || !curtain) return;
-    const rect = section.getBoundingClientRect();
-    const travel = Math.max(1, section.offsetHeight - window.innerHeight);
-    const progress = reducedMotion ? 1 : clamp(-rect.top / travel, 0, 1);
-    // First half: the three narrow colour bars grow into full-width panels.
-    // Second half: the panels lift away in sequence to reveal the editorial section.
-    const expand = clamp(progress / 0.48, 0, 1);
-    const lift = clamp((progress - 0.48) / 0.52, 0, 1);
-    curtain.style.transform = `scaleX(${Math.max(.012, expand)}) translateY(${-lift * 112}%)`;
+    targetProgress = reducedMotion
+      ? 1
+      : clamp((window.scrollY - sectionStart) / scrollDistance, 0, 1);
+    if (!frame) frame = window.requestAnimationFrame(animateReveal);
+  }
+
+  function animateReveal() {
+    // Ease toward scroll progress so tiny scroll reversals do not make the
+    // three-panel reveal visibly chatter around a threshold.
+    renderedProgress += (targetProgress - renderedProgress) * 0.18;
+    if (Math.abs(targetProgress - renderedProgress) < 0.001) {
+      renderedProgress = targetProgress;
+    }
+
+    const expand = clamp(renderedProgress / 0.48, 0, 1);
+    const lift = clamp((renderedProgress - 0.48) / 0.52, 0, 1);
+    curtain.style.transform = `translate3d(0, ${-lift * 112}%, 0) scaleX(${Math.max(0.012, expand)})`;
     curtain.style.transformOrigin = 'center center';
-    stripes.forEach((stripe, index) => {
-      stripe.style.transform = 'none';
-      stripe.style.opacity = lift >= 1 ? '0' : '1';
-      stripe.style.transitionDelay = `${index * 55}ms`;
+    stripes.forEach((stripe) => {
+      stripe.style.opacity = lift >= 0.999 ? '0' : '1';
     });
-    ticking = false;
-  }
-  function requestUpdate() {
-    if (!ticking) { window.requestAnimationFrame(updateReveal); ticking = true; }
-  }
-  window.addEventListener('scroll', requestUpdate, { passive: true });
-  window.addEventListener('resize', requestUpdate);
-  updateReveal();
 
+    if (renderedProgress !== targetProgress) {
+      frame = window.requestAnimationFrame(animateReveal);
+    } else {
+      frame = 0;
+    }
+  }
 
-  // Reveal major content as it enters the viewport.
+  if (section && curtain) {
+    window.addEventListener('scroll', updateTarget, { passive: true });
+    window.addEventListener('resize', measureReveal, { passive: true });
+    measureReveal();
+    renderedProgress = targetProgress;
+    updateTarget();
+  }
+
+  // Reveal content once when it first enters view. Keeping it visible avoids
+  // repeated opacity/transform reversals when a visitor hovers near the edge.
   const revealItems = document.querySelectorAll('[data-reveal]');
   if ('IntersectionObserver' in window && !reducedMotion) {
     const revealObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        // Toggle in both directions so elements re-enter as visitors scroll back up.
-        entry.target.classList.toggle('is-visible', entry.isIntersecting);
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
     revealItems.forEach(item => revealObserver.observe(item));
   } else {
     revealItems.forEach(item => item.classList.add('is-visible'));
