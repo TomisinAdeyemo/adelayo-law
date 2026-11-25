@@ -1736,9 +1736,11 @@ body { top: 0 !important; }
 
 /* Manual language coverage notice: sits above the navbar on desktop and mobile. */
 .language-coverage-note {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1100;
+  left: 0;
+  right: 0;
+  z-index: 1200;
   display: block;
   width: 100%;
   margin: 0;
@@ -1747,6 +1749,7 @@ body { top: 0 !important; }
   color: #172719;
   font: 500 12px/1.45 var(--font);
   text-align: center;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .12);
 }
 .language-coverage-note[hidden] { display: none; }
 .site-header { top: var(--language-note-height, 0px); }
@@ -1810,7 +1813,7 @@ body { top: 0 !important; }
 @media (max-width: 800px) {
   .site-header {
     position: fixed !important;
-    top: 0;
+    top: var(--language-note-height, 0px) !important;
     left: 0;
     right: 0;
     z-index: 1000;
@@ -1894,5 +1897,21 @@ body { top: 0 !important; }
 @media (prefers-reduced-motion: reduce) {
   .site-header .wordmark .brand-logo {
     transition: none;
+  }
+}
+
+
+/* Keep the language coverage banner above the fixed mobile navigation. */
+@media (max-width: 800px) {
+  .language-coverage-note {
+    position: fixed;
+    top: 0;
+    z-index: 1200;
+    padding: 8px 14px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .site-header {
+    top: var(--language-note-height, 0px) !important;
   }
 }
